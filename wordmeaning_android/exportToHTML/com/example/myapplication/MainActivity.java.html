@@ -1,0 +1,193 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.Cursor</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.AdapterView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Button</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ListView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Spinner</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+
+    <span class="s1">String[] wordsA1 = </span><span class="s0">new </span><span class="s1">String[</span><span class="s2">896</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s1">String[] wordsA2 = </span><span class="s0">new </span><span class="s1">String[</span><span class="s2">865</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s1">String[] wordsB1 = </span><span class="s0">new </span><span class="s1">String[</span><span class="s2">801</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s1">String[] wordsB2 = </span><span class="s0">new </span><span class="s1">String[</span><span class="s2">1423</span><span class="s1">]</span><span class="s0">;</span>
+    <span class="s1">String[] wordsC1 = </span><span class="s0">new </span><span class="s1">String[</span><span class="s2">1309</span><span class="s1">]</span><span class="s0">;</span>
+
+    <span class="s1">Context context=</span><span class="s0">this;</span>
+    <span class="s1">AssetDatabaseOpenHelper db</span><span class="s0">;</span>
+    <span class="s1">ArrayAdapter&lt;String&gt; adapter2</span><span class="s0">;</span>
+    <span class="s1">TextView textView3</span><span class="s0">,</span><span class="s1">tw77</span><span class="s0">;</span>
+    <span class="s1">Spinner spinner</span><span class="s0">;</span>
+    <span class="s1">Button button</span><span class="s0">,</span><span class="s1">btnquiz</span><span class="s0">;</span>
+    <span class="s1">EditText editText</span><span class="s0">;</span>
+    <span class="s1">ListView lv</span><span class="s0">;</span>
+    <span class="s1">String word</span><span class="s0">;</span>
+    <span class="s1">String meaning</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">dogru_cevap=</span><span class="s2">0</span><span class="s0">;</span>
+    <span class="s0">int </span><span class="s1">a=</span><span class="s2">0</span><span class="s0">;</span>
+
+    <span class="s1">ArrayAdapter&lt;String&gt; adapter</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+
+        <span class="s1">db=</span><span class="s0">new </span><span class="s1">AssetDatabaseOpenHelper(context)</span><span class="s0">;</span>
+
+        <span class="s1">spinner=findViewById(R.id.spinner)</span><span class="s0">;</span>
+
+        <span class="s1">textView3=findViewById(R.id.textView3)</span><span class="s0">;</span>
+        <span class="s1">button = findViewById(R.id.button)</span><span class="s0">;</span>
+        <span class="s1">btnquiz = findViewById(R.id.btnQuiz)</span><span class="s0">;</span>
+        <span class="s1">editText = findViewById(R.id.edtTxt)</span><span class="s0">;</span>
+        <span class="s1">lv=findViewById(R.id.listbox)</span><span class="s0">;</span>
+        <span class="s1">tw77=findViewById(R.id.tw77)</span><span class="s0">;</span>
+
+        <span class="s1">ArrayAdapter&lt;String&gt; adapter=</span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;&gt;(</span><span class="s0">this, </span><span class="s1">android.R.layout.simple_spinner_item</span><span class="s0">,</span><span class="s1">getResources().getStringArray(R.array.seviyeler))</span><span class="s0">;</span>
+        <span class="s1">adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)</span><span class="s0">;</span>
+        <span class="s1">spinner.setAdapter(adapter)</span><span class="s0">;</span>
+
+        <span class="s1">db.openDatabase()</span><span class="s0">;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+
+            <span class="s1">Cursor cursor = db.openDatabase().rawQuery(</span><span class="s3">&quot;Select * From WordTable&quot;</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">word = cursor.getColumnIndex(</span><span class="s3">&quot;word&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">level = cursor.getColumnIndex(</span><span class="s3">&quot;level&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">int </span><span class="s1">iA1 = </span><span class="s2">0</span><span class="s0">, </span><span class="s1">iA2 = </span><span class="s2">0</span><span class="s0">, </span><span class="s1">iB1 = </span><span class="s2">0</span><span class="s0">, </span><span class="s1">iB2 = </span><span class="s2">0</span><span class="s0">, </span><span class="s1">iC1 = </span><span class="s2">0</span><span class="s0">;</span>
+            <span class="s0">while </span><span class="s1">(cursor.moveToNext()) {</span>
+                <span class="s0">if </span><span class="s1">(cursor.getInt(level) == </span><span class="s2">0</span><span class="s1">) { wordsA1[iA1] = cursor.getString(word)</span><span class="s0">; </span><span class="s1">iA1++</span><span class="s0">; </span><span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(cursor.getInt(level) == </span><span class="s2">1</span><span class="s1">) { wordsA2[iA2] = cursor.getString(word)</span><span class="s0">; </span><span class="s1">iA2++</span><span class="s0">; </span><span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(cursor.getInt(level) == </span><span class="s2">2</span><span class="s1">) { wordsB1[iB1] = cursor.getString(word)</span><span class="s0">; </span><span class="s1">iB1++</span><span class="s0">; </span><span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(cursor.getInt(level) == </span><span class="s2">3</span><span class="s1">) { wordsB2[iB2] = cursor.getString(word)</span><span class="s0">; </span><span class="s1">iB2++</span><span class="s0">; </span><span class="s1">}</span>
+                <span class="s0">else if </span><span class="s1">(cursor.getInt(level) == </span><span class="s2">4</span><span class="s1">) { wordsC1[iC1] = cursor.getString(word)</span><span class="s0">; </span><span class="s1">iC1++</span><span class="s0">; </span><span class="s1">}</span>
+            <span class="s1">}</span>
+
+
+            <span class="s1">cursor.close()</span><span class="s0">;</span>
+
+        <span class="s1">}</span>
+        <span class="s0">catch </span><span class="s1">(Exception e) {</span>
+
+        <span class="s1">}</span>
+
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">spinner.setOnItemSelectedListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemSelectedListener() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onItemSelected(AdapterView&lt;?&gt; parent</span><span class="s0">, </span><span class="s1">View view</span><span class="s0">, int </span><span class="s1">position</span><span class="s0">, long </span><span class="s1">id) {</span>
+                    <span class="s0">if</span><span class="s1">(spinner.getSelectedItem().toString().equals(</span><span class="s3">&quot;A1&quot;</span><span class="s1">)){</span>
+                        <span class="s1">adapter2 = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;String&gt;(MainActivity.</span><span class="s0">this,</span><span class="s1">R.layout.activity_listview</span><span class="s0">,</span><span class="s1">R.id.textView3</span><span class="s0">,</span><span class="s1">wordsA1)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else if</span><span class="s1">(spinner.getSelectedItem().toString().equals(</span><span class="s3">&quot;A2&quot;</span><span class="s1">)){</span>
+                        <span class="s1">adapter2 = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;String&gt;(MainActivity.</span><span class="s0">this,</span><span class="s1">R.layout.activity_listview</span><span class="s0">,</span><span class="s1">R.id.textView3</span><span class="s0">,</span><span class="s1">wordsA2)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else if</span><span class="s1">(spinner.getSelectedItem().toString().equals(</span><span class="s3">&quot;B1&quot;</span><span class="s1">)){</span>
+                        <span class="s1">adapter2 = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;String&gt;(MainActivity.</span><span class="s0">this,</span><span class="s1">R.layout.activity_listview</span><span class="s0">,</span><span class="s1">R.id.textView3</span><span class="s0">,</span><span class="s1">wordsB1)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else if</span><span class="s1">(spinner.getSelectedItem().toString().equals(</span><span class="s3">&quot;B2&quot;</span><span class="s1">)){</span>
+                        <span class="s1">adapter2 = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;String&gt;(MainActivity.</span><span class="s0">this,</span><span class="s1">R.layout.activity_listview</span><span class="s0">,</span><span class="s1">R.id.textView3</span><span class="s0">,</span><span class="s1">wordsB2)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else if</span><span class="s1">(spinner.getSelectedItem().toString().equals(</span><span class="s3">&quot;C1&quot;</span><span class="s1">)){</span>
+                        <span class="s1">adapter2 = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;String&gt;(MainActivity.</span><span class="s0">this,</span><span class="s1">R.layout.activity_listview</span><span class="s0">,</span><span class="s1">R.id.textView3</span><span class="s0">,</span><span class="s1">wordsC1)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                    <span class="s0">else</span><span class="s1">{</span>
+                        <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s3">&quot;HATA&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+
+                    <span class="s1">}</span>
+                    <span class="s1">lv.setAdapter(adapter2)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onNothingSelected(AdapterView&lt;?&gt; parent) {</span>
+
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">catch </span><span class="s1">(Exception e){</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+            <span class="s1">lv.setOnItemClickListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent</span><span class="s0">, </span><span class="s1">View view</span><span class="s0">, int </span><span class="s1">position</span><span class="s0">, long </span><span class="s1">id) {</span>
+                   <span class="s1">word = lv.getItemAtPosition(position).toString()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+
+            <span class="s1">button.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+
+                    <span class="s1">textView3.setText(</span><span class="s3">&quot;Doğru Cevap: &quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">meaning= editText.getText().toString().toLowerCase()</span><span class="s0">;</span>
+                    <span class="s1">meaning=meaning.replaceAll(</span><span class="s3">&quot;</span><span class="s0">\\</span><span class="s3">s+&quot;</span><span class="s0">,</span><span class="s3">&quot; &quot;</span><span class="s1">).trim()</span><span class="s0">;</span>
+                    <span class="s1">Cursor cursor = db.openDatabase().rawQuery(</span><span class="s3">&quot;Select * From WordTable where word='&quot; </span><span class="s1">+ word + </span><span class="s3">&quot;' AND meaning1='&quot; </span><span class="s1">+ meaning + </span><span class="s3">&quot;' OR meaning2='&quot; </span><span class="s1">+ meaning + </span><span class="s3">&quot;' OR meaning3='&quot; </span><span class="s1">+ meaning + </span><span class="s3">&quot;'&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">int </span><span class="s1">id=cursor.getColumnIndex(</span><span class="s3">&quot;id&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s0">if</span><span class="s1">(meaning.isEmpty()){</span>
+                        <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s3">&quot;Lütfen Kelime Girin&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span><span class="s1">}</span>
+                    <span class="s0">else</span><span class="s1">{</span>
+                    <span class="s0">if</span><span class="s1">(cursor.moveToNext()){</span>
+                        <span class="s1">Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s3">&quot;Doğru Cevap&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                        <span class="s1">dogru_cevap++</span><span class="s0">;</span>
+                        <span class="s1">tw77.setText(</span><span class="s3">&quot;Doğru Cevap Sayısı: &quot;</span><span class="s1">+dogru_cevap)</span><span class="s0">;</span>
+
+                    <span class="s1">}</span>
+                    <span class="s0">else </span><span class="s1">{</span>
+                        <span class="s1">cursor= db.openDatabase().rawQuery(</span><span class="s3">&quot;Select meaning1,meaning2,meaning3 From WordTable where word='&quot;</span><span class="s1">+word+</span><span class="s3">&quot;'&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">String anlam=</span><span class="s3">&quot;&quot;</span><span class="s0">;</span>
+                            <span class="s0">if</span><span class="s1">(cursor.moveToNext()){</span>
+                            <span class="s1">anlam +=</span><span class="s3">&quot; &quot;</span><span class="s1">+ cursor.getString(</span><span class="s2">0</span><span class="s1">)+</span><span class="s3">&quot;, &quot;</span><span class="s1">+ cursor.getString(</span><span class="s2">1</span><span class="s1">)+</span><span class="s3">&quot;, &quot;</span><span class="s1">+ cursor.getString(</span><span class="s2">2</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">textView3.setText(</span><span class="s3">&quot;Doğru Cevap: &quot;</span><span class="s1">+anlam)</span><span class="s0">;</span><span class="s1">}</span>
+                            <span class="s0">else</span><span class="s1">{Toast.makeText(context</span><span class="s0">, </span><span class="s3">&quot;Kelime Seçmediniz&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">; </span><span class="s1">a=-</span><span class="s2">1</span><span class="s0">;</span><span class="s1">}</span>
+                            <span class="s0">if</span><span class="s1">(a==</span><span class="s2">0</span><span class="s1">) Toast.makeText(MainActivity.</span><span class="s0">this, </span><span class="s3">&quot;Yanlış Cevap&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                    <span class="s1">}}</span>
+                    <span class="s1">editText.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">cursor.close()</span><span class="s0">;</span>
+                    <span class="s1">a=</span><span class="s2">0</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+
+            <span class="s1">btnquiz.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+                <span class="s1">@Override</span>
+                <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                    <span class="s1">Intent intent=</span><span class="s0">new </span><span class="s1">Intent(getApplicationContext()</span><span class="s0">,</span><span class="s1">Quiz.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+            <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+
+<span class="s1">}</span></pre>
+</body>
+</html>

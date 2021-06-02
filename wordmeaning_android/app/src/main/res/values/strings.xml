@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Word Meanings</string>
+    <string-array name="seviyeler">
+        <item>A1</item>
+        <item>A2</item>
+        <item>B1</item>
+        <item>B2</item>
+        <item>C1</item>
+    </string-array>
+
+</resources>
